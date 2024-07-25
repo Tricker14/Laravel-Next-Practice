@@ -3,57 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function getAll(){
-        $products = Product::all();
+    private ProductService $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
+    public function index(){
+        $products = $this->productService->index();
         return response()->json($products, 200);
     }
 
-    public function getOne($id){
-        $product = Product::findOrFail($id);
-        return response()->json($product, 200);
+    public function show($id){
+        try{
+            $product = $this->productService->show($id);
+            return response()->json($product, 200);
+        }
+        catch(Exception){
+            return response()->json('Product not found', 404);
+        }
     }
 
-    public function create(Request $request){
-        $data = $request->validate([
-            'name' => 'required',
-            'quantity' => 'required|numeric',
-            'price' => 'required|decimal:0,2',
-            'description' => 'required'
-        ]);
-        $newProduct = Product::create($data);
-
-        return response()->json($newProduct, 201);
+    public function store(Request $request){
+        try{
+            $newProduct = $this->productService->store($request);
+            return response()->json($newProduct, 201);
+        }
+        catch(Exception $e){
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     public function update(Request $request, $id){
-        $product = Product::findOrFail($id);
-
-        $data = $request->validate([
-            'name' => 'required',
-            'quantity' => 'required|numeric',
-            'price' => 'required|decimal:0,2',
-            'description' => 'required'
-        ]);
-        $product->update($data);
-
-        return response()->json($product);
-    }
-
-    public function delete($id){
         try{
-
+            $product = $this->productService->update($request, $id);
+            return response()->json($product);
         }
         catch(Exception $e){
-
+            return response()->json($e->getMessage(), 400);
         }
-        $product = Product::findOrFail($id);
-        $product->delete();
+    }
 
-        return response()->json('Delete successfully', 204);
+    public function destroy($id){
+        try{
+            $this->productService->destroy($id);
+            return response()->json('Delete successfully', 204);
+        }
+        catch(Exception $e){
+            return response()->json($e->getMessage(), 400);
+        }
     }
 }
