@@ -1,3 +1,4 @@
+'use client'
 import SignUp from "../components/SignUp"
 
 const page = () => {
