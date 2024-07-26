@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProductService;
+use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
-    private ProductService $productService;
+    private CategoryService $CategoryService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(CategoryService $CategoryService)
     {
-        $this->productService = $productService;
+        $this->CategoryService = $CategoryService;
     }
 
     public function index(){
-        $products = $this->productService->index();
-        return response()->json($products, 200);
+        $Categorys = $this->CategoryService->index();
+        return response()->json($Categorys, 200);
     }
 
     public function show($id){
         try{
-            $product = $this->productService->show($id);
-            return response()->json($product, 200);
+            $Category = $this->CategoryService->show($id);
+            return response()->json($Category, 200);
         }
         catch(Exception $e){
             return response()->json($e->getMessage(), 404);
@@ -32,8 +32,8 @@ class ProductController extends Controller
 
     public function store(Request $request){
         try{
-            $newProduct = $this->productService->store($request);
-            return response()->json($newProduct, 201);
+            $newCategory = $this->CategoryService->store($request);
+            return response()->json($newCategory, 201);
         }
         catch(Exception $e){
             return response()->json($e->getMessage(), 400);
@@ -42,8 +42,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id){
         try{
-            $product = $this->productService->update($request, $id);
-            return response()->json($product);
+            $Category = $this->CategoryService->update($request, $id);
+            return response()->json($Category);
         }
         catch(Exception $e){
             return response()->json($e->getMessage(), 400);
@@ -52,7 +52,7 @@ class ProductController extends Controller
 
     public function destroy($id){
         try{
-            $this->productService->destroy($id);
+            $this->CategoryService->destroy($id);
             return response()->json('Delete successfully', 200);
         }
         catch(Exception $e){
