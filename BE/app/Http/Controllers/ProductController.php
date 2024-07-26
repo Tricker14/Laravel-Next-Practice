@@ -26,8 +26,8 @@ class ProductController extends Controller
             $product = $this->productService->show($id);
             return response()->json($product, 200);
         }
-        catch(Exception){
-            return response()->json('Product not found', 404);
+        catch(Exception $e){
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -54,7 +54,7 @@ class ProductController extends Controller
     public function destroy($id){
         try{
             $this->productService->destroy($id);
-            return response()->json('Delete successfully', 204);
+            return response()->json('Delete successfully', 200);
         }
         catch(Exception $e){
             return response()->json($e->getMessage(), 400);
