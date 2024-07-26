@@ -13,7 +13,10 @@ class ProductService {
     }
 
     public function show($id){
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
+        if(! $product){
+            throw new Exception('Product not found');
+        }
         return $product;
     }
 
@@ -58,9 +61,10 @@ class ProductService {
     }
 
     public function destroy($id){
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
+        if(! $product){
+            throw new Exception('Product not found');
+        }
         $product->delete();
-
-        return true;
     }
 }
