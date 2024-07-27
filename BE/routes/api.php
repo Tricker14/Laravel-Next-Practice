@@ -29,3 +29,13 @@ Route::put('/product/{id}', [ProductController::class, 'update'])->name('product
 Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')
     ->where(['id' => '[0-9]+']);
 
+Route::get('/categories', [ProductController::class, 'index'])->name('category.index');
+Route::get('/categories/{id}', [ProductController::class, 'show'])->name('category.show')
+    ->where(['id' => '[0-9]+']);
+Route::post('/categories', [ProductController::class, 'store'])->name('category.store');
+Route::put('/categories/{id}', [ProductController::class, 'update'])->name('category.update')
+    ->where(['id' => '[0-9]+']);
+Route::delete('/categories/{id}', [ProductController::class, 'destroy'])->name('category.destroy')
+    ->where(['id' => '[0-9]+']);
+
+
